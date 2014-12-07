@@ -1,7 +1,7 @@
 require 'gm_support'
 
 class ImageSorcery
-  attr_reader :file
+  attr_reader :file, :last_result
 
   def initialize(file)
     @file = file
@@ -140,6 +140,6 @@ class ImageSorcery
   def run(cmds)
     output = IO.popen(cmds.to_s) {|o| o.read }
     success = $?.exitstatus == 0 ? true : false
-    [output,success]
+    @last_result = [output,success,cmds.to_s]
   end
 end
