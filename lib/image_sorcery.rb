@@ -1,10 +1,11 @@
 require 'gm_support'
 
 class ImageSorcery
-  attr_reader :file, :last_result
+  attr_reader :file, :last_result, :logger
 
-  def initialize(file)
+  def initialize(file,logger = nil)
     @file = file
+    @logger = logger
   end
 
   # Runs ImageMagick's 'mogrify'.
@@ -141,5 +142,13 @@ class ImageSorcery
     output = IO.popen(cmds.to_s) {|o| o.read }
     success = $?.exitstatus == 0 ? true : false
     @last_result = [output,success,cmds.to_s]
+    log
+    last_result
+  end
+  
+  def log
+    if logger
+      logger.info "ImageMagick cmd: $ #{last_result[2]}\n     success: #{last_result[1]}\n     output: #{last_result[0]}"
+    end
   end
 end
