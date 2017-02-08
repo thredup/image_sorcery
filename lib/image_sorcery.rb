@@ -135,7 +135,9 @@ class ImageSorcery
 
   def convert_to_arguments(args)
     special_args = [:layer, :annotate]
-    args.reject {|k, v| special_args.include?(k) }.map {|k, v| " -#{k} '#{v}'"}
+    args.reject {|k, v| special_args.include?(k) }.map do |k, v|
+      k[0].in?(%w( + - )) ? " #{k} '#{v}'" : " -#{k} '#{v}'"
+    end
   end
 
   def run(cmds)
