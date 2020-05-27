@@ -14,6 +14,7 @@ class ImageSorcery
  def manipulate!(args={})
     tokens  = ["mogrify"]
     tokens << convert_to_arguments(args) if args
+    tokens << " -quiet "
     tokens << " '#{@file}#{"[#{args[:layer].to_s}]" if args[:layer]}'"
     tokens << " -annotate #{args[:annotate].to_s}" if args[:annotate]
     tokens  = convert_to_command(tokens)
